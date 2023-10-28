@@ -47,15 +47,15 @@ int main() {
 		return 1;
 	}
 
-	//for each graph, find the depth-first search ordering
-	for (;;) {
-		GraphL G;
-		G.buildGraph(infile2);
-		if (infile2.eof())
-			break;
-		G.displayGraph();
-		G.depthFirstSearch();    // find and display depth-first ordering to cout
-	}
+	// //for each graph, find the depth-first search ordering
+	// for (;;) {
+	// 	GraphL G;
+	// 	G.buildGraph(infile2);
+	// 	if (infile2.eof())
+	// 		break;
+	// 	G.displayGraph();
+	// 	G.depthFirstSearch();    // find and display depth-first ordering to cout
+	// }
 	
 	cout << endl;
 	return 0;
