@@ -7,5 +7,5 @@ using namespace std;
 
 class GraphL
 {
-
+    
 };
