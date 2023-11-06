@@ -4,16 +4,14 @@
 #include <climits>
 #include "graphm.h"
 
-
-
 using namespace std;
 
 GraphM::GraphM()
 {
     size = 0;
-    for(int i = 0; i < MAXNODES; i++)
+    for (int i = 0; i < MAXNODES; i++)
     {
-        for(int j = 0; j < MAXNODES; j++)
+        for (int j = 0; j < MAXNODES; j++)
         {
             C[i][j] = 0;
             T[i][j].dist = INT_MAX;
@@ -21,7 +19,6 @@ GraphM::GraphM()
             T[i][j].path = 0;
         }
     }
-
 }
 
 GraphM::~GraphM()
@@ -29,39 +26,56 @@ GraphM::~GraphM()
 }
 
 void GraphM::buildGraph(ifstream &file)
-{   
+{
     string s;
-    file >> size;
-    cout << size;
-    for(int i = 1; i <= size + 1; i++)
+    while (true)
     {
-        getline(file, s);
-        cout << s << endl;
-        names[i] = s;
-    }
-
-    cout << "out of first for loop" << endl;
-    int from, to, weight;
-    file >> from >> to >> weight;
-    cout << from << " " << to << " " << weight << endl;
-    while (true){
-        if(file.eof())
+        if(file.eof()){
+            cout << "end of file" << endl;
+            break;
+        }
+        file >> size;
+        if (size == 0){
+            break;
+        }
+        cout << size;
+        for (int i = 1; i <= size + 1; i++)
         {
-            break;
+            getline(file, s);
+            cout << s << endl;
+            names[i] = s;
         }
 
-        if (from == 0 && to == 0 && weight == 0){
-            cout << "I broke" << endl;
-            break;
-        }
+        cout << "out of first for loop" << endl;
 
-        insertEdge(from, to, weight);
+        int from, to, weight;
         file >> from >> to >> weight;
+        if (from == 0 && to == 0 && weight == 0){
+            break;
+        }
         cout << from << " " << to << " " << weight << endl;
+
+        while (true)
+        {
+            if (from == 0 && to == 0 && weight == 0)
+            {
+                cout << "I broke" << endl;
+                break;
+            }
+
+            insertEdge(from, to, weight);
+
+            if (file.eof())
+            {
+                break;
+            }
+            file >> from >> to >> weight;
+            cout << from << " " << to << " " << weight << endl;
+        }
     }
-     //WHERE DID YOU GO?
+    // WHERE DID YOU GO?
     // for(;;)
-    // {   
+    // {
     //     file >> s;
 
     //     if(static_cast <char> (s[0]) == '0')
@@ -69,7 +83,7 @@ void GraphM::buildGraph(ifstream &file)
     //         cout << "I am called" << endl;
     //         break;
     //     }
-          
+
     //     if(file.eof())
     //     {
     //         break;
@@ -85,11 +99,7 @@ void GraphM::buildGraph(ifstream &file)
 
     //     insertEdge(tempStore[0], tempStore[1], tempStore[2]);
     // }
-
-    cout << "I have left" << endl;
-
     file.close();
-    return;
 }
 
 void GraphM::insertEdge(int from, int to, int weight)
