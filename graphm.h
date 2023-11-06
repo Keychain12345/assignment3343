@@ -1,12 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include "nodedata.h"
+#include <climits>
 
 using namespace std;
 
 const static int MAXNODES = 100;
-
-const static int INT_MAX = 2147483647;
 
 class GraphM
 {
@@ -40,6 +39,7 @@ private:
     NodeData data [MAXNODES];
     int C[MAXNODES][MAXNODES];
     int size;
+    string names[MAXNODES];
     
     TableType T[MAXNODES] [MAXNODES];
 
