@@ -28,90 +28,71 @@ GraphM::~GraphM()
 void GraphM::buildGraph(ifstream &file)
 {
     string s;
+
+    file >> size;
+    if (size == 0)
+    {
+        return;
+    }
+
+    getline(file, s);
+    for (int i = 1; i <= size; i++)
+    {
+        getline(file, s);
+        data[i] = NodeData(s);
+    }
+
+    int from, to, weight;
+    file >> from >> to >> weight;
+    if (from == 0 && to == 0 && weight == 0)
+    {
+        return;
+    }
+
     while (true)
     {
-        if(file.eof()){
-            cout << "end of file" << endl;
-            break;
-        }
-        file >> size;
-        if (size == 0){
-            break;
-        }
-        cout << size;
-        for (int i = 1; i <= size + 1; i++)
+        if (from == 0 && to == 0 && weight == 0)
         {
-            getline(file, s);
-            cout << s << endl;
-            names[i] = s;
+            break;
         }
 
-        cout << "out of first for loop" << endl;
+        insertEdge(from, to, weight);
 
-        int from, to, weight;
+        if (file.eof())
+        {
+            file.close();
+            break;
+        }
         file >> from >> to >> weight;
-        if (from == 0 && to == 0 && weight == 0){
-            break;
-        }
-        cout << from << " " << to << " " << weight << endl;
-
-        while (true)
-        {
-            if (from == 0 && to == 0 && weight == 0)
-            {
-                cout << "I broke" << endl;
-                break;
-            }
-
-            insertEdge(from, to, weight);
-
-            if (file.eof())
-            {
-                break;
-            }
-            file >> from >> to >> weight;
-            cout << from << " " << to << " " << weight << endl;
-        }
     }
-    // WHERE DID YOU GO?
-    // for(;;)
-    // {
-    //     file >> s;
-
-    //     if(static_cast <char> (s[0]) == '0')
-    //     {
-    //         cout << "I am called" << endl;
-    //         break;
-    //     }
-
-    //     if(file.eof())
-    //     {
-    //         break;
-    //     }
-    //     cout << s << endl;
-    //     tempStore[0] = stoi(s);
-    //     file >> s;
-    //     cout << s << endl;
-    //     tempStore[1] = stoi(s);
-    //     file >> s;
-    //     cout << s << endl;
-    //     tempStore[2] = stoi(s);
-
-    //     insertEdge(tempStore[0], tempStore[1], tempStore[2]);
-    // }
-    file.close();
 }
 
 void GraphM::insertEdge(int from, int to, int weight)
 {
+    C[from][to] = weight;
 }
 
 void GraphM::removeEdge(int from, int to)
 {
+    
 }
 
 void GraphM::findShortestPath()
 {
+    for(int source = 1; source <= size; source++)
+    {
+        T[source][source].dist = 0;
+        
+        for(int i = 1; i <= size; i++)
+        {
+            if(!T[source][i].visited)
+            {
+                T[source][i].visited = true;
+            }
+            
+            
+        }
+    }
 }
 
 void GraphM::displayAll()

@@ -39,8 +39,6 @@ private:
     NodeData data [MAXNODES];
     int C[MAXNODES][MAXNODES];
     int size;
-    string names[MAXNODES];
-    
     TableType T[MAXNODES] [MAXNODES];
 
 };
