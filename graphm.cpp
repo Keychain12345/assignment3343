@@ -141,15 +141,6 @@ void GraphM::findShortestPath()
 
 void GraphM::displayAll()
 {
-    // cout << "Description" << setw(18) << "From node" << setw(12) << "To node" << setw(12) << "Dijkstra's" << setw(12) << "Path" << setw(12) << endl;
-    // for (int i = 1; i <= size; i++)
-    // {
-    //     cout << data[i] << setw(18);
-    //     for (int j = 1; j <= size; j++)
-    //     {
-    //         cout << i << setw(12) << j << setw(12) << endl;
-    //     }
-    // }
     cout << "Description" << setw(20) << "From node" << setw(10) << "To node" << setw(14) << "Dijkstra's" << setw(7) << "Path" << endl;
 
     for (int from = 1; from <= size; from++)
