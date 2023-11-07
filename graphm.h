@@ -44,4 +44,5 @@ private:
     TableType T[MAXNODES] [MAXNODES];
 
     int findSmallest(int arr[], int lo, int hi, TableType otherArr[]);
+    void findPath(int from, int to);
 };
