@@ -27,6 +27,8 @@ public:
 
     void display(int from, int to);
 
+    
+
 private: 
     struct TableType
     {
@@ -37,8 +39,9 @@ private:
 
 
     NodeData data [MAXNODES];
-    int C[MAXNODES][MAXNODES];
+    int C[MAXNODES][MAXNODES]; //adjacency matrix
     int size;
     TableType T[MAXNODES] [MAXNODES];
 
+    int findSmallest(int arr[], int lo, int hi, TableType otherArr[]);
 };

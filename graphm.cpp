@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <climits>
+#include <iomanip>
 #include "graphm.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ GraphM::GraphM()
     {
         for (int j = 0; j < MAXNODES; j++)
         {
-            C[i][j] = 0;
+            C[i][j] = INT_MAX;
             T[i][j].dist = INT_MAX;
             T[i][j].visited = false;
             T[i][j].path = 0;
@@ -85,20 +86,50 @@ void GraphM::findShortestPath()
         
         for(int i = 1; i <= size; i++)
         {
-            if(!T[source][i].visited)
-            {
-                T[source][i].visited = true;
-            }
-            
-            
+           int vIndex = findSmallest(C[source], 1, size, T[source]);
+           T[source][vIndex].visited = true;
+           for(int j = i; j <= size; j++)
+           {
+                int w = j;
+                if(!T[source][w].visited)
+                {
+                    T[source][w].dist = min(T[source][w].dist, T[source][vIndex].dist + C[vIndex][w]);
+                }
+           }
         }
     }
 }
 
 void GraphM::displayAll()
 {
+    cout << "Description" << setw(18) << "From node" << setw(12) << "To node" << setw(12) << "Dijkstra's" << setw(12) << "Path" << setw(12) << endl;
+    for(int i = 1; i <= size; i++)
+    {
+        cout << data[i] << setw(18);
+        for(int j = 1; j<= size; j++)
+        {
+            cout << i << setw(12) << j << setw(12) << endl;
+        }
+    }
 }
 
 void GraphM::display(int from, int to)
 {
+}
+
+int GraphM::findSmallest(int arr[], int lo, int hi, TableType otherArr[])
+{
+    hi = INT_MAX;
+    int loIndex = 1;
+    for(int i = 1; i <= size; i++)
+    {
+        if(arr[i] < hi && (otherArr[i].visited == false))
+        {
+            hi = arr[i];
+            loIndex = i;
+        }
+        
+    }
+
+    return loIndex;
 }
