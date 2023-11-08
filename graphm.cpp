@@ -99,43 +99,76 @@ void GraphM::findShortestPath()
     {
         for (int i = 1; i <= size; i++)
         {
-            T[source][i].visited = false;
-            T[source][i].dist = MAXNODES;
-            T[source][i].path = 0;
+            for(int j = 1; j <= size; j++)
+            {
+                T[i][j].visited = false;
+                T[i][j].dist = INT_MAX;
+                T[i][j].path = 0;
+            }
         }
 
+        // T[source][source].dist = 0;
+
+        // for (int j = 1; j <= size; j++)
+        // {
+        //     int minDist = MAXNODES;
+        //     int v = -1;
+
+        //     for (int w = 1; w <= size; w++)
+        //     {
+        //         if (!T[source][w].visited && T[source][w].dist < minDist)
+        //         {
+        //             minDist = T[source][w].dist;
+        //             v = w;
+        //         }
+        //     }
+
+        //     if (v == -1)
+        //     {
+        //         break;
+        //     }
+
+        //     T[source][v].visited = true;
+
+        //     for (int w = 1; w <= size; w++)
+        //     {
+        //         if (!T[source][w].visited && C[v][w] && T[source][v].dist != MAXNODES && T[source][v].dist + C[v][w] < T[source][w].dist)
+        //         {
+        //             T[source][w].dist = T[source][v].dist + C[v][w];
+        //             T[source][w].path = v;
+        //         }
+        //     }
+        // }
+        
         T[source][source].dist = 0;
-
-        for (int j = 1; j <= size; j++)
+        int smallestPath = INT_MAX;
+        for(int i = 1; i <= size; i++)
         {
-            int minDist = MAXNODES;
-            int v = -1;
-
-            for (int w = 1; w <= size; w++)
+            int v = findSmallest(C[source], 1, size, T[source]);
+            if(T[source][v].visited == false )
             {
-                if (!T[source][w].visited && T[source][w].dist < minDist)
+                T[source][v].visited = true;
+                T[source][v].dist = T[source][source].dist + C[source][v];
+            }
+
+            for(int w = 1; w <= size; w++)
+            {
+                if(C[v][w] != INT_MAX)
                 {
-                    minDist = T[source][w].dist;
-                    v = w;
+                    if(T[v][w].visited == false)
+                    {
+                        T[source][w].dist = min(T[source][w].dist, T[source][v].dist + C[v][w]);
+                        if(T[source][v].dist + C[v][w] < T[source][w].dist)
+                        {
+                            T[source][w].path = v;
+                        }
+                    }
                 }
             }
 
-            if (v == -1)
-            {
-                break;
-            }
-
-            T[source][v].visited = true;
-
-            for (int w = 1; w <= size; w++)
-            {
-                if (!T[source][w].visited && C[v][w] && T[source][v].dist != MAXNODES && T[source][v].dist + C[v][w] < T[source][w].dist)
-                {
-                    T[source][w].dist = T[source][v].dist + C[v][w];
-                    T[source][w].path = v;
-                }
-            }
         }
+        
+    
     }
 }
 
