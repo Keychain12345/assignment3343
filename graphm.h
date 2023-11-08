@@ -45,4 +45,5 @@ private:
 
     int findSmallest(int arr[], int lo, int hi, TableType otherArr[]);
     void findPath(int from, int to);
+    void printNodes(int from, int to);
 };
