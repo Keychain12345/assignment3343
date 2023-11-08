@@ -2,6 +2,7 @@
 #include <fstream>
 #include "nodedata.h"
 #include <climits>
+#include <iomanip>
 
 using namespace std;
 
@@ -35,5 +36,7 @@ private:
     };
 
     GraphNode arrList[MAX_NODES];
+
+    void depthFirstSearcherHelper(int v);
     
 };
