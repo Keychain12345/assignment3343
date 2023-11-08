@@ -14,8 +14,8 @@ GraphM::GraphM()
     {
         for (int j = 0; j < MAXNODES; j++)
         {
-            C[i][j] = INT_MAX;
-            T[i][j].dist = INT_MAX;
+            C[i][j] = 10000;
+            T[i][j].dist = 10000;
             T[i][j].visited = false;
             T[i][j].path = 0;
         }
@@ -70,7 +70,9 @@ void GraphM::buildGraph(ifstream &file)
 
 void GraphM::insertEdge(int from, int to, int weight)
 {
-    C[from][to] = weight;
+    if (weight != 10000){
+        C[from][to] = weight;
+    }
 }
 
 void GraphM::removeEdge(int from, int to)
@@ -97,12 +99,12 @@ void GraphM::findShortestPath()
     // }
     for (int source = 1; source <= size; source++)
     {
-        for (int i = 1; i <= size; i++)
+        for (int i = 1; i <= MAXNODES; i++)
         {
-            for(int j = 1; j <= size; j++)
+            for(int j = 1; j <= MAXNODES; j++)
             {
                 T[i][j].visited = false;
-                T[i][j].dist = INT_MAX;
+                T[i][j].dist = abs(10000);
                 T[i][j].path = 0;
             }
         }
@@ -141,39 +143,56 @@ void GraphM::findShortestPath()
         // }
         
         T[source][source].dist = 0;
-        int smallestPath = INT_MAX;
         for(int i = 1; i <= size; i++)
         {
-            int v = findSmallest(C[source], 1, size, T[source]);
-            if(T[source][v].visited == false )
-            {
-                T[source][v].visited = true;
-                T[source][v].dist = T[source][source].dist + C[source][v];
-            }
+            cout << "current source " << source << endl;
+            int v = findSmallest(C[source], 1, size, T[source]); 
+            T[source][v].visited = true;
+            cout << "distance from " << source << " to " << v << ": " << T[source][v].dist << endl;
 
             for(int w = 1; w <= size; w++)
             {
-                if(C[v][w] != INT_MAX)
+                if(C[v][w] != abs(10000))
                 {
-                    if(T[v][w].visited == false)
+                    if(T[source][w].visited == false)
                     {
                         T[source][w].dist = min(T[source][w].dist, T[source][v].dist + C[v][w]);
+
                         if(T[source][v].dist + C[v][w] < T[source][w].dist)
                         {
+                            T[source][w].dist = T[source][v].dist + C[v][w];
                             T[source][w].path = v;
+                        }
+                        else
+                        {
+                            T[source][w].path = source;
                         }
                     }
                 }
             }
 
         }
-        
-    
     }
 }
 
 void GraphM::displayAll()
 {
+    cout << "Cost Matrix" << endl;
+    for (int from = 1; from <= size; from++)
+    {
+        for (int to = 1; to <= size; to++)
+        {
+            if (C[from][to] == 10000)
+            {
+                cout << "INF\t";
+            }
+            else
+            {
+                cout << C[from][to] << "\t";
+            }
+        }
+        cout << endl;
+    }
     cout << "Description" << setw(20) << "From node" << setw(10) << "To node" << setw(14) << "Dijkstra's" << setw(7) << "Path" << endl;
 
     for (int from = 1; from <= size; from++)
@@ -187,16 +206,16 @@ void GraphM::displayAll()
                 cout << setw(27) << from;
                 cout << setw(10) << to;
 
-                if (T[from][to].dist == MAXNODES)
-                {
-                    cout << setw(12) << "----" << endl;
-                }
-                else
+                if (T[from][to].dist != 10000)
                 {
                     cout << setw(12) << T[from][to].dist << setw(7);
                     cout << from << ' ';
                     findPath(from, to);
                     cout << to << endl;
+                }
+                else
+                {
+                    cout << setw(12) << "----" << endl;
                 }
             }
         }
@@ -209,16 +228,20 @@ void GraphM::display(int from, int to)
 
 int GraphM::findSmallest(int arr[], int lo, int hi, TableType otherArr[])
 {
-    hi = INT_MAX;
+    hi = 10000;
     int loIndex = 1;
+    cout << endl << "current call" << endl;
     for (int i = 1; i <= size; i++)
     {
-        if (arr[i] < hi && (otherArr[i].visited == false))
+        cout << otherArr[i].dist << " ";
+        if ((otherArr[i].dist < hi) && (otherArr[i].visited == false))
         {
-            hi = arr[i];
+            hi = otherArr[i].dist;
             loIndex = i;
         }
     }
+
+    cout << endl << "final: " << otherArr[loIndex].dist << " node index: " << loIndex << endl << endl;
 
     return loIndex;
 }
@@ -230,7 +253,7 @@ void GraphM::findPath(int from, int to)
     }
 
     else if(T[from][to].path == 0){
-        cout << "No path found";
+        cout << "No path found" << to << ' ';
     }
     else {
         findPath(from, T[from][to].path);
