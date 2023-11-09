@@ -18,7 +18,16 @@ GraphL::GraphL()
 
 GraphL::~GraphL()
 {
-    
+    for(int i = 0; i <= size; i++)
+    {
+        EdgeNode * current = arrList[i].edgeHead;
+        delete arrList[i].data;
+        while(current != nullptr)
+        {
+            delete current;
+            current = current->nextEdge;
+        }
+    }
 }
 
 void GraphL::buildGraph(ifstream &file)
